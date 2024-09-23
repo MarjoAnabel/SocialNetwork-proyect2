@@ -23,6 +23,15 @@ export const getById = createAsyncThunk("posts/getById", async (id) => {
       console.error(error)
     }
   })
+
+  export const getPostByName = createAsyncThunk(
+    'posts/getPostByName',
+    async (postName) => {
+      const response = await axios.get(`/api/posts/name/${postName}`); // Llamada simplificada
+      return response.data; // Devuelve los posts
+    }
+  ); 
+
   
 
 export const postsSlice = createSlice({
@@ -47,6 +56,12 @@ export const postsSlice = createSlice({
          builder.addCase(getById.fulfilled, (state, action) => {
             state.post = action.payload
           })
+
+          .addCase(getPostByName.fulfilled, (state, action) => {
+            state.posts = action.payload
+          })
+          
+        
       
     },
   })

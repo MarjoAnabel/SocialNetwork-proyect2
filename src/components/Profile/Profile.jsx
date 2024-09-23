@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 
 const Profile = () => {
   const { user, isLoading, isError, message } = useSelector((state) => state.auth);

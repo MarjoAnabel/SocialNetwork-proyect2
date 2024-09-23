@@ -43,7 +43,6 @@ export const logout = createAsyncThunk('auth/logout', async () => {
     console.error(error)
   }
  })
- 
 
   
 export const authSlice = createSlice({

@@ -1,8 +1,18 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Red-Social Front
 
-Currently, two official plugins are available:
+En este proyecto vamos ha conectar la Api de una red Social que se hizo anteriormente implementar el front y back. Este proyecto hemos tenido que hacer algunas modificaciones en el Back sobre los endpoints para poder traer la información correctamente 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Used By
+
+Desarrollo Front
+
+- Login users 
+- Registro users
+- Ver post y comentarios
+- Dar/quitar Like
+- Crear nuevos posts y comentarios
+- Buscador de posts
+- El usuario en su perfil pueda ver los datos y posts
+- Editar y eliminar postque hace el usuario logeado
+

@@ -16,3 +16,11 @@ Desarrollo Front
 - El usuario en su perfil pueda ver los datos y posts
 - Editar y eliminar postque hace el usuario logeado
 
+  ## Authors
+
+- [@Marjoanabel](https://github.com/MarjoAnabel)
+
+
+## 🛠 Skills
+Redux, Router, SASS, AntDesign
+

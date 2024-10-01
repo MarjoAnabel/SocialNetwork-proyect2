@@ -10,7 +10,8 @@ import Search from './components/Search/Search'
 import AdminZone from './guards/AdminZone'
 import Admin from './components/Admin/Admin'
 import NotFound from './components/NotFound/NotFound'
-
+import PostCreate from './components/Post/PostCreate'
+import Comments from './components/Comments/CommentsList'
 
 function App() {
   return (
@@ -30,6 +31,11 @@ function App() {
       <Route path="/admin" element={ <AdminZone> <Admin /> </AdminZone>}/>
       <Route path="/posts/id/:_id" element={<PostDetail />} />
       <Route path="/search/:postName" element={<Search />} />
+      <Route path="/search/create" element={<PostCreate />} />
+      <Route path='/comments' element={<Comments />} />
+
+
+
     </Routes>
   </BrowserRouter>
 </div>

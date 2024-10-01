@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import postsService from "./postsService"
+import axios from "axios"
 
 const initialState = {
 posts:[],
@@ -8,6 +9,16 @@ post:{},
 error: null,
 }
 
+
+export const createPost = createAsyncThunk('posts/Postcreate', async (postData, thunkAPI) => {
+  try {
+    const response = await postsService.create(postData);
+    return response;
+  } catch (error) {
+    const message = error.response?.data?.error || error.message;
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 export const getAll = createAsyncThunk("posts/getAll", async () => {
   try {
     return await postsService.getAll();
@@ -33,9 +44,18 @@ export const getById = createAsyncThunk("posts/getById", async (id) => {
   ); 
 
 
-  export const like = createAsyncThunk('posts/like', async (_id) => {
+  export const likePost = createAsyncThunk('posts/like', async (_id, thunkAPI) => {
     try {
-      return await postsService.like(_id)
+      return await postsService.like(_id); // Asegúrate de que _id es un string válido
+    } catch (error) {
+      const message = error.response?.data?.error || error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  });
+
+   export const dislike = createAsyncThunk('posts/dislike', async (_id) => {
+    try {
+      return await postsService.dislike(_id)
     } catch (error) {
       console.error(error)
     }
@@ -52,10 +72,32 @@ export const postsSlice = createSlice({
         state.isLoading = false;
       },
     },
+
+    updatePostLikes: (state, action) => {
+      const index = state.posts.findIndex(post => post._id === action.payload._id);
+      if (index !== -1) {
+        state.posts[index] = {
+          ...state.posts[index],
+          likes: action.payload.likes,
+        };
+      }
+    },
+
     extraReducers: (builder) => {
       builder.
 
-            addCase(getAll.fulfilled, (state, action) => {
+      addCase(createPost.fulfilled, (state, action) => {
+        if (action.payload && action.payload._id) {
+          state.posts.push(action.payload);
+        } else {
+          console.error('Post creado sin _id:', action.payload);
+        }
+      })
+      
+      .addCase(createPost.rejected, (state, action) => {
+        state.error = action.payload || action.error.message;
+      })
+        .addCase(getAll.fulfilled, (state, action) => {
            state.posts = action.payload;
          })
 
@@ -70,21 +112,35 @@ export const postsSlice = createSlice({
           .addCase(getPostByName.fulfilled, (state, action) => {
             state.posts = action.payload
           })
+          
+         
 
-          .addCase(like.fulfilled, (state, action) => {
-            const posts = state.posts.map((post) => {
-              if (post_id === action.payload._id) {
-                post = action.payload
-              }
-              return post
-            })
-            state.posts = posts
-          })
-     
+          .addCase(likePost.fulfilled, (state, action) => {
+        const index = state.posts.findIndex(post => post._id === action.payload._id);
+        if (index !== -1) {
+          state.posts[index] = {
+            ...state.posts[index],
+            likes: action.payload.likes,
+          };
+        }
+      })
+
+          // .addCase(dislike.fulfilled, (state, action) => {
+          //   const updatedPost = action.payload; // Aquí recibimos el post actualizado con los likes
+          //   state.posts = state.posts.map((post) => {
+          //     if (post._id === updatedPost._id) {
+          //       return {
+          //         ...post,  // Mantiene todas las propiedades del post
+          //         likes: updatedPost.likes,  // Solo actualiza la propiedad de likes
+          //       };
+          //     }
+          //     return post;
+          //   });
+          // })
           
         
       
     },
   })
-  export const { reset } = postsSlice.actions
+  export const { reset, updatedPost } = postsSlice.actions
   export default postsSlice.reducer
